@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Find affordable food and plan your budget with Meal Mitra.">
+<title>Meal Mitra — Good Food. Smart Budget.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@1,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="bg-art" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+<header class="site-header">
+  <a class="brand" href="#home"><span class="brand-icon">🍛</span><span class="brand-word"><span class="bw-meal">Meal</span><span class="bw-mitra">Mitra</span></span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  <nav class="nav-links" id="navLinks">
+    <a class="active" href="#home">Home</a><a href="#find-food">Find Food</a><a href="#budget">Budget</a><a href="#popular">Categories</a><a href="#results">Foods</a><a href="#hotels">Hotels</a><a href="#map">Map</a><a href="#favorites">Favorites <span class="favorite-count" id="favoriteCount">0</span></a><a href="#cart" data-route="cart">My Cart <span class="favorite-count cart-count" id="cartCount">0</span></a><a href="#records" data-route="records">Records</a>
+  </nav>
+  <a class="header-cta" href="#find-food">Explore food <span>↗</span></a>
+</header>
+<main class="page" data-page="home">
+<section class="hero section-wrap" id="home">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> MADE FOR SMARTER FOOD CHOICES</div>
+    <h1>Good food.<br><span>Smart budget.</span><br>Better days.</h1>
+    <p class="hero-description">Discover tasty meals, compare menu prices, and find student-friendly places without stretching your budget.</p>
+    <div class="hero-actions"><a class="button button-primary" href="#find-food">Find my food <span>→</span></a><a class="text-link" href="#budget">Explore budgets <span>↗</span></a></div>
+    <div class="hero-proof"><div class="avatar-stack"><span>🍜</span><span>🥗</span><span>🍛</span></div><div><strong>Every rupee counts.</strong><small>Find a meal that fits your day.</small></div></div>
+  </div>
+  <div class="hero-art" aria-label="Illustration of a meal"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="hero-sun"></div><div class="food-plate"><div class="plate-inner"><div class="rice"></div><div class="curry curry-one"></div><div class="curry curry-two"></div><div class="greens"></div><div class="tomato"></div><div class="lemon"></div></div></div><div class="floating-card price-float"><span class="float-icon">₹</span><div><small>Meals from</small><strong>₹49</strong></div><span class="float-spark">✦</span></div><div class="floating-card rating-float"><span class="rating-star">★</span><div><strong>Worth every bite</strong><small>Smart picks for students</small></div></div><div class="art-label label-top">GOOD FOOD CLUB</div><div class="art-label label-bottom">EAT WELL, SPEND WISELY</div></div>
+</section>
+<section class="cities-section section-wrap">
+  <div class="section-heading"><div><span class="section-kicker">GOOD FOOD, WHEREVER YOU ARE</span><h2>Explore your <em>city.</em></h2></div><p>Sample listings across Tamil Nadu, Kerala, Karnataka,<br>Telangana, Andhra Pradesh and Puducherry.</p></div>
+  <div class="state-tabs" id="stateTabs" role="tablist" aria-label="Filter cities by state"></div>
+  <div class="city-grid" id="cityGrid"></div>
+</section>
+<section class="bottom-cta section-wrap"><div><span class="section-kicker">EAT WELL. SPEND WISELY.</span><h2>Your next great meal<br>is just a little smarter.</h2></div><a class="button button-light" href="#find-food">Find your food <span>→</span></a><span class="cta-doodle">✳</span></section>
+</main>
+<main class="page hidden" data-page="find-food">
+<section class="search-panel section-wrap" id="find-food">
+  <div class="search-heading"><div><span class="section-kicker">LET'S FIND YOUR NEXT MEAL</span><h2>What fits your appetite <em>and</em> budget?</h2></div><span class="search-spark">✳</span></div>
+  <form class="search-grid" id="searchForm">
+    <label class="search-field"><span class="field-icon">⌖</span><span class="field-content"><small>YOUR CITY</small><select id="citySelect"></select></span><span class="field-chevron">⌄</span></label>
+    <label class="search-field"><span class="field-icon">♨</span><span class="field-content"><small>CRAVING</small><select id="foodSelect"><option value="All">Anything delicious</option><option>South Indian</option><option>Biryani</option><option>Fast Food</option><option>Snacks</option><option>Drinks</option><option>North Indian</option><option>Chinese</option><option>Desserts</option></select></span><span class="field-chevron">⌄</span></label>
+    <label class="search-field"><span class="field-icon">🍽</span><span class="field-content"><small>RESTAURANT</small><select id="hotelSelect"><option value="All">All restaurants</option></select></span><span class="field-chevron">⌄</span></label><label class="search-field"><span class="field-icon">₹</span><span class="field-content"><small>BUDGET</small><select id="budgetSelect"><option value="0-50">Under ₹50</option><option value="0-100" selected>Under ₹100</option><option value="0-200">Under ₹200</option><option value="51-100">₹51 – ₹100</option><option value="101-200">₹101 – ₹200</option><option value="201-300">₹201 – ₹300</option><option value="301-500">₹301 – ₹500</option><option value="501-700">₹501 – ₹700</option><option value="701-1000">₹701 – ₹1000</option><option value="0-100000">Any budget</option></select></span><span class="field-chevron">⌄</span></label>
+    <button class="button button-primary search-button" id="findFoodBtn" type="submit">Find food <span>→</span></button>
+  </form>
+  <p class="search-note"><span>✦</span> Demo listings are sample data. Check with a restaurant for current prices before visiting.</p>
+</section>
+</main>
+<main class="page hidden" data-page="budget">
+<section class="budget-section section-wrap" id="budget">
+  <div class="section-heading"><div><span class="section-kicker">YOUR MONEY, YOUR CHOICE</span><h2>Choose your <em>budget.</em></h2></div><p>Great meals come in every price range.<br>Find one that works for you.</p></div>
+  <div class="budget-grid">
+    <button class="budget-card budget-green" data-budget="0-50"><span class="budget-icon">🥪</span><span class="budget-name">Very low</span><strong>₹0–50</strong><span class="budget-caption">Little spend, happy plate</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-blue" data-budget="51-100"><span class="budget-icon">🍜</span><span class="budget-name">Low</span><strong>₹51–100</strong><span class="budget-caption">Everyday favourites</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-orange" data-budget="101-200"><span class="budget-icon">🍛</span><span class="budget-name">Medium</span><strong>₹101–200</strong><span class="budget-caption">Treat yourself well</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-pink" data-budget="201-300"><span class="budget-icon">🍕</span><span class="budget-name">Mid-high</span><strong>₹201–300</strong><span class="budget-caption">Something special</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-green" data-budget="301-500"><span class="budget-icon">🍗</span><span class="budget-name">High</span><strong>₹301–500</strong><span class="budget-caption">Family-style dining</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-blue" data-budget="501-700"><span class="budget-icon">🦐</span><span class="budget-name">Premium</span><strong>₹501–700</strong><span class="budget-caption">Platters &amp; seafood</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-orange" data-budget="701-1000"><span class="budget-icon">🍖</span><span class="budget-name">Luxury</span><strong>₹701–1000</strong><span class="budget-caption">Feast for the table</span><span class="budget-arrow">↗</span></button>
+    <button class="budget-card budget-pink" data-budget="0-100000"><span class="budget-icon">🍽️</span><span class="budget-name">Any</span><strong>All prices</strong><span class="budget-caption">Show me everything</span><span class="budget-arrow">↗</span></button>
+  </div>
+</section>
+</main>
+<main class="page hidden" data-page="popular">
+<section class="popular-section section-wrap" id="popular">
+  <div class="section-heading"><div><span class="section-kicker">A LITTLE BIT OF EVERYTHING</span><h2>What are you <em>craving?</em></h2></div><a class="text-link" href="#results">Browse all food <span>→</span></a></div>
+  <div class="category-grid">
+    <button class="category-card" data-category="South Indian"><span class="category-emoji">🥞</span><strong>South Indian</strong><small>Dosa, idli & more</small></button>
+    <button class="category-card" data-category="Biryani"><span class="category-emoji">🍚</span><strong>Biryani</strong><small>Big flavour, smart picks</small></button>
+    <button class="category-card" data-category="Fast Food"><span class="category-emoji">🍔</span><strong>Fast food</strong><small>Quick bites</small></button>
+    <button class="category-card" data-category="Snacks"><span class="category-emoji">🥟</span><strong>Snacks</strong><small>Small bites, big joy</small></button>
+    <button class="category-card" data-category="Drinks"><span class="category-emoji">🧋</span><strong>Drinks</strong><small>Cool down</small></button>
+  </div>
+</section>
+</main>
+<main class="page hidden" data-page="results">
+<section class="results-section section-wrap" id="results">
+  <div class="section-heading results-heading"><div><span class="section-kicker">SMART PICKS FOR YOUR WALLET</span><h2>Food worth finding<span class="title-dot">.</span></h2><p class="results-subtitle" id="resultsSubtitle">Affordable demo menu items to get you started.</p></div><label class="sort-control"><span>Sort by</span><select id="sortSelect"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="rating">Rating</option><option value="nearest">Nearest to me</option></select></label></div>
+  <div class="hotel-menu hidden" id="hotelMenu"></div>
+  <div class="food-grid" id="foodGrid"></div><div class="load-more-wrap"><button class="button button-dark hidden" id="loadMore" type="button">Show more picks</button></div><div class="empty-state hidden" id="emptyState"><span>🍽️</span><h3>No matches just yet</h3><p>Try a higher budget or another category.</p><button class="button button-dark" id="resetFilters">Reset filters</button></div>
+</section>
+</main>
+<main class="page hidden" data-page="hotels">
+<section class="hotels-section section-wrap" id="hotels">
+  <div class="section-heading"><div><span class="section-kicker">PICK A PLACE TO EAT</span><h2 id="hotelsTitle">Hotels in your city<span class="title-dot">.</span></h2><p class="results-subtitle" id="hotelsSubtitle"></p></div></div>
+  <div class="hotels-skip"><button class="button button-dark" type="button" id="skipHotel">Skip · show food from all restaurants →</button></div>
+  <div class="hotel-grid" id="hotelGrid"></div>
+  </section>
+</main>
+<main class="page hidden" data-page="map">
+<section class="map-section section-wrap" id="map">
+  <div class="section-heading"><div><span class="section-kicker">FIND IT ON THE MAP</span><h2>Food <em>near you.</em></h2></div><p>See every pick for your search on the map.<br>Turn on live location to see how far each one is.</p></div>
+  <div class="map-card">
+    <div class="map-toolbar"><button class="button button-primary" id="locateBtn" type="button">⌖ Use my live location</button><button class="button button-dark hidden" id="stopLocateBtn" type="button">Stop sharing</button><button class="map-chip" id="fitBtn" type="button">Show all picks</button><span class="map-status" id="mapStatus" role="status" aria-live="polite">Location is off. Your position stays in your browser.</span></div>
+    <div class="route-bar hidden" id="routeBar"></div>
+    <div id="foodMap" class="food-map" aria-label="Map of food picks"></div>
+  </div>
+</section>
+</main>
+<main class="page hidden" data-page="favorites">
+<section class="favorites-section section-wrap" id="favorites">
+  <div class="section-heading"><div><span class="section-kicker">SAVED FOR YOUR NEXT CRAVING</span><h2>Your <em>favourites.</em></h2></div><p>Tap the heart on any food card to save it here.</p></div>
+  <div class="food-grid" id="favoritesGrid"></div><p class="favorites-empty" id="favoritesEmpty">No favourites saved yet. Explore the menu and tap ♡ to save a food item.</p>
+</section>
+</main>
+<main id="cartPage" data-page="cart" class="page hidden" aria-label="My cart">
+<section class="cart-wrap section-wrap">
+  <div class="section-heading"><div><span class="section-kicker">REVIEW BEFORE YOU EAT</span><h2>My <em>cart.</em></h2></div><a class="text-link" href="#find-food">Add more food <span>→</span></a></div>
+  <div id="cartContent"></div>
+</section>
+</main>
+<main id="recordsPage" data-page="records" class="page hidden" aria-label="Daily records">
+<section class="cart-wrap section-wrap">
+  <div class="section-heading"><div><span class="section-kicker">YOUR FOOD SPENDING, DAY BY DAY</span><h2>Daily <em>records.</em></h2></div><a class="text-link" href="#cart">Go to cart <span>→</span></a></div>
+  <div id="recordsContent"></div>
+</section>
+</main>
+<div class="modal hidden" id="replaceModal" role="dialog" aria-modal="true" aria-labelledby="replaceTitle"><div class="modal-card"><div class="modal-head"><h3 id="replaceTitle">Replace food</h3><button class="modal-close" id="replaceClose" type="button" aria-label="Close">✕</button></div><p class="modal-sub" id="replaceSub"></p><div class="modal-filters"><input id="replaceSearch" type="search" placeholder="Search food or hotel…"><select id="replaceCity"></select></div><div class="replace-list" id="replaceList"></div></div></div>
+<footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-icon">🍛</span><span class="brand-word"><span class="bw-meal">Meal</span><span class="bw-mitra">Mitra</span></span></a><p>Good food. Smart budget. Better choices.</p><small>Student project demo • Listings, prices and ratings are sample data.</small><a href="#home" class="back-top">Back to top ↑</a></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="data/restaurants.js"></script><script src="data/extra.js"></script><script src="data/generate.js"></script><script src="js/app.js"></script>
+</body></html>
